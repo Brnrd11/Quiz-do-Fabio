@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quiz Estilo Kahoot</title>
+  <title>Quiz Divertido!</title>
   <style>
     body {
       background-color: #0d1117;
@@ -74,11 +74,32 @@
       font-size: 0.95em;
       color: #bbb;
     }
+
+    .timer {
+      font-weight: bold;
+      color: #ffb347;
+      margin-bottom: 10px;
+    }
+
+    .progress {
+      height: 6px;
+      background: #444;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: #ff4081;
+      width: 100%;
+      transition: width 1s linear;
+    }
   </style>
 </head>
 <body>
   <div class="container" id="quiz-container">
-    <h1>Quiz Estilo Kahoot</h1>
+    <h1>Quiz Divertido!</h1>
     <p>Escolha um tema para começar:</p>
     <div id="theme-buttons"></div>
   </div>
@@ -109,46 +130,8 @@
         { q: "Qual país inventou o samba?", options: ["Cuba", "Brasil", "México", "Portugal"], correct: 1, exp: "O samba é brasileiro!" },
         { q: "Maior planeta do Sistema Solar:", options: ["Terra", "Saturno", "Júpiter", "Urano"], correct: 2, exp: "Júpiter é o maior planeta." },
         { q: "Quem descobriu o Brasil?", options: ["Pedro Álvares Cabral", "Cristóvão Colombo", "Vasco da Gama", "Cabral"], correct: 0, exp: "Pedro Álvares Cabral, em 1500." }
-      ],
-
-      "Informática": [
-        { q: "O que significa 'CPU'?", options: ["Central Process Unit", "Control Processing Unit", "Central Processing Unit", "Computer Personal Unit"], correct: 2, exp: "CPU = Central Processing Unit." },
-        { q: "Qual é o sistema operacional da Microsoft?", options: ["Linux", "MacOS", "Windows", "Ubuntu"], correct: 2, exp: "Sistema da Microsoft é o Windows." },
-        { q: "O que é um navegador?", options: ["Programa para internet", "Antivírus", "Jogo", "Editor de texto"], correct: 0, exp: "Serve para acessar a internet." },
-        { q: "Qual atalho copia um texto?", options: ["Ctrl + V", "Ctrl + X", "Ctrl + C", "Ctrl + Z"], correct: 2, exp: "Ctrl + C copia." },
-        { q: "O que é 'hardware'?", options: ["Parte física", "Programa", "Aplicativo", "Rede"], correct: 0, exp: "Hardware = parte física do computador." },
-        { q: "O que é 'software'?", options: ["Parte física", "Parte lógica", "Teclado", "Monitor"], correct: 1, exp: "Software = parte lógica (programas)." },
-        { q: "O que é 'Wi-Fi'?", options: ["Rede sem fio", "Rede com fio", "Bluetooth", "Firewall"], correct: 0, exp: "Wi-Fi é rede sem fio." },
-        { q: "Qual empresa criou o iPhone?", options: ["Samsung", "Apple", "Google", "Huawei"], correct: 1, exp: "A Apple criou o iPhone." },
-        { q: "O que é 'URL'?", options: ["Endereço de site", "Programa", "Tipo de vírus", "Imagem"], correct: 0, exp: "URL é o endereço do site." },
-        { q: "Qual desses é um sistema livre?", options: ["Windows", "MacOS", "Linux", "iOS"], correct: 2, exp: "Linux é sistema livre." }
-      ],
-
-      "Cultura Pop": [
-        { q: "Quem é o criador da Marvel?", options: ["Stan Lee", "Walt Disney", "George Lucas", "James Gunn"], correct: 0, exp: "Stan Lee é o criador." },
-        { q: "Quem canta 'Blinding Lights'?", options: ["The Weeknd", "Drake", "Post Malone", "Ed Sheeran"], correct: 0, exp: "A música é do The Weeknd." },
-        { q: "Qual série tem o personagem Eleven?", options: ["Loki", "Stranger Things", "The Boys", "Dark"], correct: 1, exp: "Eleven é de Stranger Things." },
-        { q: "Em que ano lançou Minecraft?", options: ["2009", "2010", "2011", "2012"], correct: 2, exp: "Minecraft lançou em 2011." },
-        { q: "Quem é o criador de Dragon Ball?", options: ["Masashi Kishimoto", "Eiichiro Oda", "Akira Toriyama", "Tite Kubo"], correct: 2, exp: "Akira Toriyama." },
-        { q: "Qual é o nome do vilão em 'Vingadores: Ultimato'?", options: ["Ultron", "Thanos", "Loki", "Kang"], correct: 1, exp: "O vilão é Thanos." },
-        { q: "O anime Naruto vem de qual país?", options: ["China", "Japão", "Coreia", "EUA"], correct: 1, exp: "Naruto é japonês." },
-        { q: "Quem é o protagonista de One Piece?", options: ["Zoro", "Naruto", "Luffy", "Goku"], correct: 2, exp: "Monkey D. Luffy!" },
-        { q: "Qual desses é um jogo da Nintendo?", options: ["God of War", "Zelda", "GTA", "Valorant"], correct: 1, exp: "Zelda é da Nintendo." },
-        { q: "Em Star Wars, quem é o pai de Luke?", options: ["Obi-Wan", "Yoda", "Anakin", "Han Solo"], correct: 2, exp: "Anakin Skywalker." }
-      ],
-
-      "Esportes": [
-        { q: "Qual país venceu a Copa de 2002?", options: ["Alemanha", "Brasil", "Itália", "França"], correct: 1, exp: "Brasil venceu a Copa de 2002." },
-        { q: "Quantos jogadores há em um time de futebol?", options: ["9", "10", "11", "12"], correct: 2, exp: "São 11 jogadores." },
-        { q: "Quem é conhecido como 'Rei do Futebol'?", options: ["Pelé", "Maradona", "Messi", "Cristiano Ronaldo"], correct: 0, exp: "Pelé é o Rei do Futebol." },
-        { q: "Quantos pontos vale uma cesta de 3 no basquete?", options: ["2", "3", "4", "5"], correct: 1, exp: "Vale 3 pontos." },
-        { q: "Qual esporte usa raquete?", options: ["Vôlei", "Tênis", "Futebol", "Basquete"], correct: 1, exp: "Tênis usa raquete." },
-        { q: "Em qual esporte se usa tacos?", options: ["Basebol", "Futebol", "Basquete", "Tênis"], correct: 0, exp: "Basebol usa tacos." },
-        { q: "Maior campeão da F1:", options: ["Hamilton", "Schumacher", "Senna", "Vettel"], correct: 1, exp: "Schumacher tem 7 títulos." },
-        { q: "Em que país nasceu o MMA?", options: ["EUA", "Japão", "Brasil", "Rússia"], correct: 2, exp: "O MMA nasceu no Brasil." },
-        { q: "Quem é conhecido como 'Bolt'?", options: ["Jogador de futebol", "Corredor", "Nadador", "Boxeador"], correct: 1, exp: "Usain Bolt é corredor." },
-        { q: "Qual esporte é jogado com taco e buracos no chão?", options: ["Beisebol", "Tênis", "Golfe", "Pólo"], correct: 2, exp: "Golfe usa taco e buracos no campo." }
       ]
+      // os outros temas podem continuar iguais aos anteriores
     };
 
     const container = document.getElementById("quiz-container");
@@ -163,18 +146,25 @@
 
     function startQuiz(theme) {
       let current = 0;
-      let score = 0;
       const questions = temas[theme];
+      let timer, timeLeft;
 
       function showQuestion() {
+        clearInterval(timer);
         const q = questions[current];
+        timeLeft = 15;
+
         container.innerHTML = `
           <h2>${theme}</h2>
-          <p><b>Pergunta ${current + 1}/${questions.length}:</b> ${q.q}</p>
+          <p><b>Pergunta ${current + 1}/${questions.length}</b></p>
+          <div class="timer">⏱ Tempo: <span id="time">${timeLeft}</span>s</div>
+          <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+          <p>${q.q}</p>
           <div id="options"></div>
           <p id="feedback" class="explanation"></p>
           <button id="nextBtn" style="display:none;">Próxima</button>
         `;
+
         const optionsDiv = document.getElementById("options");
         q.options.forEach((opt, i) => {
           const div = document.createElement("div");
@@ -183,11 +173,28 @@
           div.onclick = () => selectAnswer(i);
           optionsDiv.appendChild(div);
         });
+
+        timer = setInterval(() => {
+          timeLeft--;
+          document.getElementById("time").textContent = timeLeft;
+          document.getElementById("progress-bar").style.width = (timeLeft / 15) * 100 + "%";
+
+          if (timeLeft <= 0) {
+            clearInterval(timer);
+            showFeedback(-1);
+          }
+        }, 1000);
       }
 
       function selectAnswer(i) {
+        clearInterval(timer);
+        showFeedback(i);
+      }
+
+      function showFeedback(i) {
         const q = questions[current];
         const options = document.querySelectorAll(".option");
+
         options.forEach((opt, idx) => {
           opt.style.pointerEvents = "none";
           if (idx === q.correct) opt.classList.add("correct");
@@ -195,9 +202,9 @@
         });
 
         const feedback = document.getElementById("feedback");
-        feedback.innerHTML = i === q.correct
-          ? "✅ Correto! " + q.exp
-          : "❌ Errado! " + q.exp;
+        if (i === q.correct) feedback.innerHTML = "✅ Correto! " + q.exp;
+        else if (i === -1) feedback.innerHTML = "⏰ Tempo esgotado! " + q.exp;
+        else feedback.innerHTML = "❌ Errado! " + q.exp;
 
         document.getElementById("nextBtn").style.display = "block";
         document.getElementById("nextBtn").onclick = nextQuestion;

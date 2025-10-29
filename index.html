@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Interativo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #007bff, #00bfff);
+      color: #fff;
+      text-align: center;
+      padding: 50px;
+      margin: 0;
+    }
+    h1, h2 {
+      margin-bottom: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+    .tema-btn, .alt-btn {
+      background: #fff;
+      color: #007bff;
+      border: none;
+      padding: 15px;
+      margin: 10px;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 80%;
+    }
+    .tema-btn:hover, .alt-btn:hover {
+      transform: scale(1.05);
+      background: #e0e0e0;
+    }
+    .feedback {
+      font-size: 20px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .certa {
+      color: #00ff99;
+    }
+    .errada {
+      color: #ff4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Escolha o tema do quiz</h1>
+    <div id="inicio">
+      <button class="tema-btn" onclick="iniciarQuiz('matematica')">Matemática</button>
+      <button class="tema-btn" onclick="iniciarQuiz('geral')">Conhecimento Geral</button>
+      <button class="tema-btn" onclick="iniciarQuiz('informatica')">Informática</button>
+      <button class="tema-btn" onclick="iniciarQuiz('cultura')">Cultura Pop</button>
+      <button class="tema-btn" onclick="iniciarQuiz('esportes')">Esportes</button>
+    </div>
+
+    <div id="quiz" style="display:none;">
+      <h2 id="titulo"></h2>
+      <p id="pergunta"></p>
+      <div id="alternativas"></div>
+      <div id="feedback" class="feedback"></div>
+      <button id="proximo" style="display:none;" class="tema-btn" onclick="proximaPergunta()">Próxima</button>
+    </div>
+  </div>
+
+  <script>
+    const perguntas = {
+      matematica: [
+        { q: "Quanto é 7 × 8?", a: ["54", "56", "64", "58"], c: 1 },
+        { q: "Raiz quadrada de 81?", a: ["9", "8", "7", "6"], c: 0 },
+        { q: "Quanto é 12 + 15?", a: ["25", "26", "27", "28"], c: 2 },
+        { q: "Qual o valor de π (pi) aproximado?", a: ["2.14", "3.14", "4.13", "3.41"], c: 1 },
+        { q: "Quanto é 100 ÷ 4?", a: ["20", "25", "30", "40"], c: 1 },
+        { q: "Qual é a metade de 36?", a: ["16", "18", "20", "22"], c: 1 },
+        { q: "Quanto é 9²?", a: ["81", "72", "64", "91"], c: 0 },
+        { q: "Raiz cúbica de 27?", a: ["2", "3", "4", "5"], c: 1 },
+        { q: "Quanto é 8 × 9?", a: ["72", "63", "81", "64"], c: 0 },
+        { q: "Quanto é 1000 - 450?", a: ["450", "550", "500", "600"], c: 1 }
+      ],
+      geral: [
+        { q: "Qual é o maior oceano?", a: ["Atlântico", "Pacífico", "Índico", "Ártico"], c: 1 },
+        { q: "Quem pintou a Mona Lisa?", a: ["Van Gogh", "Da Vinci", "Picasso", "Michelangelo"], c: 1 },
+        { q: "Qual país tem mais habitantes?", a: ["China", "Índia", "EUA", "Brasil"], c: 1 },
+        { q: "Qual é o metal usado em fios elétricos?", a: ["Ouro", "Cobre", "Prata", "Alumínio"], c: 1 },
+        { q: "Qual é o maior planeta?", a: ["Terra", "Júpiter", "Marte", "Saturno"], c: 1 },
+        { q: "Capital da França?", a: ["Paris", "Londres", "Roma", "Madri"], c: 0 },
+        { q: "Quantos continentes existem?", a: ["5", "6", "7", "8"], c: 2 },
+        { q: "Quem descobriu o Brasil?", a: ["Pedro Álvares Cabral", "Dom Pedro I", "Cristóvão Colombo", "Vasco da Gama"], c: 0 },
+        { q: "Qual animal é o rei da selva?", a: ["Tigre", "Leão", "Urso", "Elefante"], c: 1 },
+        { q: "Em que ano o homem foi à Lua?", a: ["1965", "1969", "1972", "1980"], c: 1 }
+      ],
+      informatica: [
+        { q: "CPU significa:", a: ["Central Process Unit", "Computer Personal Unit", "Central Processing Unit", "Control Process Unit"], c: 2 },
+        { q: "O que é hardware?", a: ["Programas", "Parte física", "Sistema", "Rede"], c: 1 },
+        { q: "Qual desses é um sistema operacional?", a: ["Python", "Windows", "Excel", "Google"], c: 1 },
+        { q: "O que é um navegador?", a: ["Computador", "Programa de internet", "Sistema", "Arquivo"], c: 1 },
+        { q: "Qual é a função do mouse?", a: ["Digitar", "Selecionar", "Reiniciar", "Ouvir"], c: 1 },
+        { q: "O que é RAM?", a: ["Memória temporária", "Armazenamento fixo", "Placa de vídeo", "Processador"], c: 0 },
+        { q: "Qual empresa criou o Windows?", a: ["Apple", "Microsoft", "Google", "Intel"], c: 1 },
+        { q: "O que é um vírus de computador?", a: ["Software malicioso", "Hardware", "Sistema", "Rede"], c: 0 },
+        { q: "Qual extensão indica imagem?", a: [".mp3", ".jpg", ".exe", ".txt"], c: 1 },
+        { q: "O que é um pendrive?", a: ["Mouse", "Teclado", "Dispositivo de armazenamento", "Monitor"], c: 2 }
+      ],
+      cultura: [
+        { q: "Quem é o criador do universo Marvel?", a: ["Stan Lee", "DC Comics", "Disney", "James Gunn"], c: 0 },
+        { q: "Em que série aparece Eleven?", a: ["The Boys", "Stranger Things", "Loki", "The Witcher"], c: 1 },
+        { q: "Quem canta 'Blinding Lights'?", a: ["Drake", "The Weeknd", "Bruno Mars", "Post Malone"], c: 1 },
+        { q: "Qual filme tem o personagem Jack Sparrow?", a: ["Matrix", "Piratas do Caribe", "Velozes e Furiosos", "Avatar"], c: 1 },
+        { q: "Quem é o vilão de Star Wars?", a: ["Luke", "Yoda", "Darth Vader", "Han Solo"], c: 2 },
+        { q: "Qual é a casa de Harry Potter?", a: ["Ravenclaw", "Slytherin", "Gryffindor", "Hufflepuff"], c: 2 },
+        { q: "Quem é o dono da Marvel?", a: ["DC", "Disney", "Netflix", "Sony"], c: 1 },
+        { q: "Quem interpreta Homem de Ferro?", a: ["Tom Holland", "Chris Evans", "Robert Downey Jr.", "Mark Ruffalo"], c: 2 },
+        { q: "Qual banda canta 'Bohemian Rhapsody'?", a: ["Queen", "Beatles", "AC/DC", "Kiss"], c: 0 },
+        { q: "Em qual série tem Walter White?", a: ["Breaking Bad", "Peaky Blinders", "Friends", "Suits"], c: 0 }
+      ],
+      esportes: [
+        { q: "Quantos jogadores tem um time de futebol?", a: ["10", "11", "12", "9"], c: 1 },
+        { q: "Qual esporte usa raquete?", a: ["Basquete", "Tênis", "Futebol", "Vôlei"], c: 1 },
+        { q: "Onde ocorre a Fórmula 1?", a: ["Campo", "Quadra", "Autódromo", "Pista de gelo"], c: 2 },
+        { q: "Quantos sets tem uma partida de vôlei?", a: ["3", "4", "5", "6"], c: 2 },
+        { q: "Quantos pontos vale uma cesta de 3?", a: ["2", "3", "4", "1"], c: 1 },
+        { q: "Qual país inventou o futebol?", a: ["Brasil", "Inglaterra", "EUA", "França"], c: 1 },
+        { q: "Quem é conhecido como Rei do Futebol?", a: ["Pelé", "Neymar", "Messi", "CR7"], c: 0 },
+        { q: "Qual esporte Tiger Woods joga?", a: ["Tênis", "Golfe", "Basquete", "Beisebol"], c: 1 },
+        { q: "Qual país sediou as Olimpíadas de 2016?", a: ["EUA", "China", "Brasil", "Japão"], c: 2 },
+        { q: "Quantos minutos tem um tempo de futebol?", a: ["30", "45", "60", "50"], c: 1 }
+      ]
+    };
+
+    let temaAtual, indice = 0;
+
+    function iniciarQuiz(tema) {
+      temaAtual = tema;
+      indice = 0;
+      document.getElementById("inicio").style.display = "none";
+      document.getElementById("quiz").style.display = "block";
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      const p = perguntas[temaAtual][indice];
+      document.getElementById("titulo").innerText = temaAtual.toUpperCase();
+      document.getElementById("pergunta").innerText = `${indice + 1}. ${p.q}`;
+      const altDiv = document.getElementById("alternativas");
+      altDiv.innerHTML = "";
+      document.getElementById("feedback").innerText = "";
+      document.getElementById("proximo").style.display = "none";
+      p.a.forEach((alt, i) => {
+        const b = document.createElement("button");
+        b.innerText = alt;
+        b.className = "alt-btn";
+        b.onclick = () => responder(i);
+        altDiv.appendChild(b);
+      });
+    }
+
+    function responder(i) {
+      const p = perguntas[temaAtual][indice];
+      const feed = document.getElementById("feedback");
+      if (i === p.c) {
+        feed.innerHTML = `<span class='certa'>✅ Correto!</span>`;
+      } else {
+        feed.innerHTML = `<span class='errada'>❌ Errado!</span> A resposta certa é: <strong>${p.a[p.c]}</strong>`;
+      }
+      document.getElementById("proximo").style.display = "inline-block";
+      document.querySelectorAll(".alt-btn").forEach(btn => btn.disabled = true);
+    }
+
+    function proximaPergunta() {
+      indice++;
+      if (indice < perguntas[temaAtual].length) {
+        mostrarPergunta();
+      } else {
+        document.getElementById("quiz").innerHTML = `
+          <h2>Fim do quiz de ${temaAtual}!</h2>
+          <button class='tema-btn' onclick='location.reload()'>Voltar ao início</button>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>
